@@ -13,6 +13,21 @@
   want to help with it. Pull requests, as well as any bug reports,
   wishes, suggestions and so on are very welcome.
 
+** How to use clojure-literally
+   clojure-literally is a [[https://en.wikipedia.org/wiki/Literate_programming][literate programming]] (LP) project, based on
+   [[https://www.gnu.org/software/emacs/][Emacs]] and [[http://orgmode.org][Org mode]]. To make best use of it, you should setup those
+   tools and interact with the code throughout the documents.
+
+   If you don't want to get into these tools, you can still consume
+   clojure-literally like you would read any other book or website
+   about programming. However, I would like to encourage you to at
+   least try out Emacs + Org mode. Many users became really
+   enthusiastic about it and this goes far beyond being a great
+   Clojure environment and being able to run clojure-literally.
+
+** TODO Provide complete setup instructions for LP
+** TODO Provide LP usage instructions
+
 * The Clojure Progamming Language
 ** Basic Clojure Lessons
 ** Advanced Clojure Lessons

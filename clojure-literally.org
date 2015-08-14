@@ -5,6 +5,14 @@
 
   You can think of clojure-literally as an interactive book about
   programming with Clojure.
+
+  This is work in progress and not considered to be a released version
+  yet. Nevertheless it is being created and developed in the public
+  from the beginning on. Ideally this will become a community effort
+  with many contributors. Don't be shy, please get in touch if you
+  want to help with it. Pull requests, as well as any bug reports,
+  wishes, suggestions and so on are very welcome.
+
 * The Clojure Progamming Language
 ** Basic Clojure Lessons
 ** Advanced Clojure Lessons

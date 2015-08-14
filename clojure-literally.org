@@ -1,0 +1,12 @@
+* What is this?
+  clojure-literally is a new style of learning resource. It combines
+  traditional publication, website contents and actually executable
+  code.
+
+  You can think of clojure-literally as an interactive book about
+  programming with Clojure.
+* The Clojure Progamming Language
+** Basic Clojure Lessons
+** Advanced Clojure Lessons
+* Clojure Libraries
+* Clojure Resources

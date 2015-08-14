@@ -40,5 +40,10 @@
 ** ClojureDocs
    [[https://clojuredocs.org/][ClojureDocs]] is a community-powered documentation and examples
    repository
+** Clojure Style Guide
+   "This Clojure style guide recommends best practices so that
+   real-world Clojure programmers can write code that can be
+   maintained by other real-world Clojure programmers."
+   https://github.com/bbatsov/clojure-style-guide
 * Contributors
   - [[http://nils-blum-oeste.net/][Nils Blum-Oeste]]

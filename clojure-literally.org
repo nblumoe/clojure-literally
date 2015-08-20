@@ -46,5 +46,48 @@
 ** Chats
    - Clojurians on https://clojurians.slack.com, join via
      http://clojurians.net/
+* Literate Programming (LP)
+** Motivation
+*** Why are programms split into files and folders?
+*** Computers vs Humans
+**** Reading Code > Writing Code
+**** Humans first
+     "Instead of imagining that our main task is to instruct a computer
+     what to do, let us concentrate rather on explaining to human
+     beings what we want a computer to do." - Donald Knuth
+** What is LP and how is it different?
+*** Approach
+    - develop in the order of logic and flow of thoughts
+    - write in ordinary language
+    - include pseudocode-like macros to outline computer instructions
+    - use source code snippets to implement the macro pseudocode
+**** Example
+     A simple example would be a basic Clojure namespace, outlined like
+     this:
+     #+BEGIN_SRC :noweb yes
+     <<namespace-declaration>>
+     <<private-functions>>
+     <<public-functions>>
+     #+END_SRC
+
+     Namespaces are used to modularize and encapsulate Clojure
+     code. The most basic declaration would be ~(ns
+     my.namespace)~. Additional arguments would include for example
+     dependencies of a namespace. As it is good practice to include a
+     namespace, let us use the following namepsace declaration in this
+     example:
+
+     #+NAME namespace-declaration
+     #+BEGIN_SRC clojure
+     (ns com.futurice.lp-example
+       "A dead simple namespace with functions of highly questionable value.")
+     #+END_SRC
+
+     #+NAME public-functions
+     #+BEGIN_SRC clojure
+     (defn foo [] (println "bar"))
+     #+END_SRC
+*** Capture thoughts and concepts
+** Cons
 * Contributors
   - [[http://nils-blum-oeste.net/][Nils Blum-Oeste]]

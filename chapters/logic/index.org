@@ -1,35 +1,75 @@
 * Logic Programming with Clojure's core.logic
 
-  core.logic is a library for logic programming in Clojure.
+  =core.logic= is a library for logic programming in Clojure.
 
-** Logic Variables
+** Basic Setup
 
-   Logic variables can take anbiguous values, but only one value at a
-   time. The solver (core.logic basically) can determine all the
-   values for which given constraints are true. So what are those
-   constraints?
+   Before we can start to use =core.logic=, we need to take care of a
+   little setup. It's super short and easy, I promise.
 
-** Constraints
+*** Leiningen Project
 
-   Constraints are expressions that must be true for valid Logic
-   Variables. Here is an example:
+    The Leiningen project setup is very simple. Basically only the
+    =core.logic= dependency needs to be added:
 
-   #+BEGIN_SRC clojure
-   (require 'core.logic)
+    #+BEGIN_SRC clojure :tangle project.clj
+    (defproject clojure-literally/logic "0.1.0-SNAPSHOT"
+      :dependencies [[org.clojure/clojure "1.7.0"]
+                     [org.clojure/core.logic "0.8.10"]])
+    #+END_SRC
 
-   ()
+*** Use the library
 
-   #+END_SRC
+    To use =core.logic= simply require it in a REPL session:
+
+    #+BEGIN_SRC clojure :results none
+    (require '[clojure.core.logic :as l])
+    #+END_SRC
+
+    When not only working in a REPL, but with persistent source code
+    files, you should add the =require= to the namespace
+    declaration. Business as usual!
+
+** Getting Started
+*** Logic Variables
+
+    Logic variables can take anbiguous values, but only one value at a
+    time. The solver (core.logic basically) can determine all the
+    values for which given constraints are true. So what are those
+    constraints?
+
+*** Constraints
+
+    Constraints are expressions that must be true for valid Logic
+    Variables. As such, =core.logic= can find all Logic Variables that
+    satisfy the given set of constraints.
+
+    Let us have a look at a simple example.
+
+    Here is a very basic example:
+
+    #+NAME: example-1
+    #+BEGIN_SRC clojure :results verbatim :exports both :post comment-results(result=*this*)
+    (l/run* [q]
+      (l/membero q [1 2 3])
+      (l/membero q [2 3 4]))
+    #+END_SRC
+
+    #+RESULTS: example-1
+    : ;=> (2 3)
+
+    The result call_example-1[:post]() is bla bla
 
 ** Resources
 
     - [[https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer][The official core.logic primer]]
 
-* Project Setup
+** Helpers
 
-  #+BEGIN_SRC clojure :tangle project.clj
-  (defproject clojure-literally/logic "0.1.0-SNAPSHOT"
-    :dependencies [[org.clojure/clojure "1.7.0"]
-                   [org.clojure/core.logic "0.8.10"]])
+   A source block used to indicate a result in an source code block.
+   #+NAME: comment-results
+   #+BEGIN_SRC clojure :var result="" :exports none
+   (str ";=> " result)
+   #+END_SRC
 
-  #+END_SRC
+*** TODO Move to some kind of library to share code with other chapters

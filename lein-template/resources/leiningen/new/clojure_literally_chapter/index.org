@@ -1,0 +1,3 @@
+* {{name}}
+
+  Start writing the chapter here.

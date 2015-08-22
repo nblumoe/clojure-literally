@@ -12,5 +12,6 @@
     (main/info "Generating fresh 'lein new' clojure-literally-chapter project.")
     (->files data
              ["index.org" (render "index.org" data)]
+             [".gitignore" (render ".gitignore" data)]
              ["README.org" (render "README.org" data)]
              ["LICENSE" (render "LICENSE" data)])))

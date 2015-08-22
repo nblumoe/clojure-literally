@@ -1,3 +1,10 @@
 * {{name}}
 
   Start writing the chapter here.
+
+* Project Setup
+
+  #+BEGIN_SRC clojure :tangle project.clj
+  (defproject clojure-literally/{{name}} "0.1.0-SNAPSHOT"
+    :dependencies [[org.clojure/clojure "1.7.0"]])
+  #+END_SRC

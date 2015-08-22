@@ -1,0 +1,35 @@
+* Logic Programming with Clojure's core.logic
+
+  core.logic is a library for logic programming in Clojure.
+
+** Logic Variables
+
+   Logic variables can take anbiguous values, but only one value at a
+   time. The solver (core.logic basically) can determine all the
+   values for which given constraints are true. So what are those
+   constraints?
+
+** Constraints
+
+   Constraints are expressions that must be true for valid Logic
+   Variables. Here is an example:
+
+   #+BEGIN_SRC clojure
+   (require 'core.logic)
+
+   ()
+
+   #+END_SRC
+
+** Resources
+
+    - [[https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer][The official core.logic primer]]
+
+* Project Setup
+
+  #+BEGIN_SRC clojure :tangle project.clj
+  (defproject clojure-literally/logic "0.1.0-SNAPSHOT"
+    :dependencies [[org.clojure/clojure "1.7.0"]
+                   [org.clojure/core.logic "0.8.10"]])
+
+  #+END_SRC

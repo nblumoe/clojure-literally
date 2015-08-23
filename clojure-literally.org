@@ -27,15 +27,17 @@
 
 ** TODO Provide complete setup instructions for LP
 ** TODO Provide LP usage instructions
-
-* The Clojure Progamming Language
-** Basic Clojure Lessons
-** Advanced Clojure Lessons
-* Clojure Libraries
-** Components
-** Compojure
-** Schema
-* Development Tools
+* Chapters
+** The Clojure Progamming Language
+*** Basic Clojure Lessons
+*** Advanced Clojure Lessons
+** Clojure Libraries
+*** Components
+*** Compojure
+*** Schema
+** Logic Programming
+   - [[file:chapters/logic/index.org][Logic Programming with Clojure's core.logic]]
+** Development Tools
 * Web Resources
 ** Function documentation and examples
    - [[https://clojuredocs.org/][ClojureDocs]] is a community-powered documentation and examples

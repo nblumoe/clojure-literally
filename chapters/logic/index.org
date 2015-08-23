@@ -79,8 +79,7 @@
     : ([x l])
     :   A relation where l is a collection, such that l contains x.
 
-
-*** Anything
+*** Number of Solutions and Anything
 
     Logcial expressions can easily have more than one logic variable
     that complies with them. We already saw this in the [[*Constraints][constraints
@@ -99,15 +98,32 @@
     :   Executes goals until a maximum of n results are found.
 
     With =l/run= we can specify the maximum number of results. Here is
-    an example:
+    an example, returning numbers in a given range that contain at
+    least one "9":
 
-    #+BEGIN_SRC clojure :results verbatim :exports both
+    #+BEGIN_SRC clojure :results value verbatim :exports both
     (l/run 3 [q]
-      (l/membero q (range 200 1000 12)))
+      (l/membero q (range 200 1000 12))
+      (l/pred q #(boolean (re-find #"9" (str %)))))
     #+END_SRC
 
     #+RESULTS:
-    : (200 212 224)
+    : (296 392 596)
+
+    Only three solutions are returned, even though more than those
+    exist:
+
+    #+BEGIN_SRC clojure :results value verbatim :exports both
+    (l/run* [q]
+      (l/membero q (range 200 1000 12))
+      (l/pred q #(boolean (re-find #"9" (str %)))))
+    #+END_SRC
+
+    #+RESULTS:
+    : (296 392 596 692 896 908 920 932 944 956 968 980 992)
+
+    Limiting the number of results is often useful. You might only be
+    interested in one possible solution for example.
 
     But what happens if *anything* would fulfill the logic expressions?
 

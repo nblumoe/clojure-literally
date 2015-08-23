@@ -58,7 +58,27 @@
     #+RESULTS: example-1
     : ;=> (2 3)
 
-    The result call_example-1[:post]() is bla bla
+    The result call_example-1[:post]() is a list of elements that are
+    present in both vectors passed to =l/membero=. Both calls of
+    =l/membero= define a logic expression. In this case, that the
+    logic variable =q= needs to be a member of both these
+    vectores. =l/run*= passes the expressions to the =clojure.core=
+    logic solver, which then finds all possible values of =q= that
+    are compliant with the logic expressions.
+
+    =l/membero= is straight forward, a logical expression such that a
+    value is an element of a collection:
+
+    #+BEGIN_SRC clojure :results output verbatim :exports both
+    (doc l/membero)
+    #+END_SRC
+
+    #+RESULTS:
+    : -------------------------
+    : clojure.core.logic/membero
+    : ([x l])
+    :   A relation where l is a collection, such that l contains x.
+
 
 ** Resources
 

@@ -176,8 +176,11 @@
     - [[https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer][The official core.logic primer]]
 
 ** Helpers
+   These helper functions are not relevant for the logic programming
+   material. They are just helpers for handling literate programming
+   with org-babel.
 
-   A source block used to indicate a result in an source code block.
+   A source block used to indicate a return in an source code block.
    #+NAME: comment-results
    #+BEGIN_SRC clojure :var result="" :exports none
    (str ";=> " result)

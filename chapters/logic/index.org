@@ -33,7 +33,7 @@
 ** Getting Started
 *** Logic Variables
 
-    Logic variables can take anbiguous values, but only one value at a
+    Logic variables can take ambiguous values, but only one value at a
     time. The solver (core.logic basically) can determine all the
     values for which given constraints are true. So what are those
     constraints?
@@ -79,6 +79,81 @@
     : ([x l])
     :   A relation where l is a collection, such that l contains x.
 
+
+*** Anything
+
+    Logcial expressions can easily have more than one logic variable
+    that complies with them. We already saw this in the [[*Constraints][constraints
+    example]]. The possible results might be very long and you might not
+    be interested in all of them. in such cases use =l/run=:
+
+    #+BEGIN_SRC clojure :results output
+    (doc l/run)
+    #+END_SRC
+
+    #+RESULTS:
+    : -------------------------
+    : clojure.core.logic/run
+    : ([n bindings & goals])
+    : Macro
+    :   Executes goals until a maximum of n results are found.
+
+    With =l/run= we can specify the maximum number of results. Here is
+    an example:
+
+    #+BEGIN_SRC clojure :results verbatim :exports both
+    (l/run 3 [q]
+      (l/membero q (range 200 1000 12)))
+    #+END_SRC
+
+    #+RESULTS:
+    : (200 212 224)
+
+    But what happens if *anything* would fulfill the logic expressions?
+
+    #+BEGIN_SRC clojure :exports both :results verbatim
+    (l/run* [q]
+      (l/== q q))
+    #+END_SRC
+
+    #+RESULTS:
+    : (_0)
+
+    The result =_0= indicates, that any value would comply with the
+    constraints. =_= stands for anything and =0= is an index. To
+    understand why there is an index, have a look at the following
+    example:
+
+    #+BEGIN_SRC clojure :exports both :results verbatim
+    (l/run* [q p]
+      (l/== q q)
+      (l/== p p))
+    #+END_SRC
+
+    #+RESULTS:
+    : ([_0 _1])
+
+    =q= and =p= can be anything and they can be different. Being
+    different is indicated with the indices. =_0= is anything and =_1=
+    is another anything. So whatever =q= and =p= are, they are
+    independent and satisfy the logical expressions.
+
+    With a simple, additional logic expression, both =q= and =p= need
+    to be identical:
+
+    #+BEGIN_SRC clojure :exports both :results verbatim
+    (l/run* [q p]
+      (l/== q q)
+      (l/== p p)
+      (l/== q p))
+    #+END_SRC
+
+    #+RESULTS:
+    : ([_0 _0])
+
+    =q= and =p= can be anything, as long as they are identical. =q=
+    and =p= both need to be =_0= at the same time. This is indicated
+    by using the same index =0= on the "anything expression" =_=.
 
 ** Resources
 

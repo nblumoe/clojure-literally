@@ -1,0 +1,87 @@
+* xml
+
+  Start writing the chapter here.
+* Web Resources
+  http://blog.korny.info/2014/03/08/xml-for-fun-and-profit.html
+
+* Project Setup
+
+  #+BEGIN_SRC clojure :tangle project.clj
+  (defproject clojure-literally/xml "0.1.0-SNAPSHOT"
+    :dependencies [[org.clojure/clojure "1.7.0"]
+                   [org.clojure/data.xml "0.0.8"]])
+  #+END_SRC
+
+* Creating XML
+
+  At first, we want to create some XML with Clojure. Later we will parse the XML
+  again.
+
+  Require the Clojure XML library:
+  #+BEGIN_SRC clojure
+  (require '[clojure.data.xml :as xml])
+  #+END_SRC
+
+  #+RESULTS:
+  : nil
+
+  Now that we have the library available, we can use it to generate some
+  XML. One posibility is to use the =element= function:
+
+  #+BEGIN_SRC clojure
+  (let [tags (xml/element :pets {:awesome true}
+                          (xml/element :dog)
+                          (xml/element :cat)
+                          (xml/element :tortoise))]
+    (xml/emit-str tags))
+  #+END_SRC
+
+  #+RESULTS:
+  : <?xml version="1.0" encoding="UTF-8"?><foo foo-attr="foo value"></foo>
+
+** Creating an infinite XML stream
+
+   For further experimenting, it will be handy to have an infinite stream of XML
+   data available. Let's create some random data about named animals.
+
+   We start with two vectors from which we are going to pull random combinations:
+
+   #+BEGIN_SRC clojure
+   (def animals [:dog :cat :tortoise :axolotl :toucan])
+   (def names [:alma :gwyn :mallory :socorro :calvin :cindie :kent :laverna :hisako :marsha])
+   #+END_SRC
+
+   Getting random pairs from our vectors is easy:
+
+   #+BEGIN_SRC clojure
+   (defn rand-animal []
+     (let [animal (rand-nth animals)
+           name   (rand-nth names)]
+       {:animal animal :name name}))
+   #+END_SRC
+
+   We want to be able to get a XML represantation of each animal:
+
+   #+BEGIN_SRC clojure
+   (defn animal->xml [{:keys [animal name]}]
+     (xml/element animal {:name name}))
+   #+END_SRC
+
+   Now we can easily get ten random animals in an XML string like this:
+
+   #+BEGIN_SRC clojure
+   (->> (repeatedly 10 rand-animal)
+        (map animal->xml)
+        xml/emit-str)
+   #+END_SRC
+
+   #+RESULTS:
+   : <?xml version="1.0" encoding="UTF-8"?><dog name=":hisako"></dog><tortoise name=":marsha"></tortoise><dog name=":alma"></dog><cat name=":marsha"></cat><cat name=":gwyn"></cat><dog name=":laverna"></dog><toucan name=":mallory"></toucan><tortoise name=":mallory"></tortoise><tortoise name=":mallory"></tortoise><axolotl name=":marsha"></axolotl>
+
+* Simple XML Parsing
+
+* Handling large XML files
+
+** Lazy evaluation
+
+** Using event streams

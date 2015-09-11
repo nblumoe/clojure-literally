@@ -67,16 +67,25 @@
      (xml/element animal {:name name}))
    #+END_SRC
 
-   Now we can easily get ten random animals in an XML string like this:
+   To get a number of random animals we can use a function like this:
 
    #+BEGIN_SRC clojure
-   (->> (repeatedly 10 rand-animal)
-        (map animal->xml)
-        xml/emit-str)
+   (defn get-animals [num-animals]
+     (->> (repeatedly num-animals rand-animal)
+          (map animal->xml)))
    #+END_SRC
 
    #+RESULTS:
-   : <?xml version="1.0" encoding="UTF-8"?><dog name=":hisako"></dog><tortoise name=":marsha"></tortoise><dog name=":alma"></dog><cat name=":marsha"></cat><cat name=":gwyn"></cat><dog name=":laverna"></dog><toucan name=":mallory"></toucan><tortoise name=":mallory"></tortoise><tortoise name=":mallory"></tortoise><axolotl name=":marsha"></axolotl>
+   : #'user/get-animals
+
+   Here are 10 random animals, represented in a XML string:
+
+   #+BEGIN_SRC clojure
+   (xml/emit-str (get-animals 10))
+   #+END_SRC
+
+   #+RESULTS:
+   : <?xml version="1.0" encoding="UTF-8"?><toucan name=":hisako"></toucan><dog name=":mallory"></dog><axolotl name=":hisako"></axolotl><cat name=":marsha"></cat><tortoise name=":calvin"></tortoise><axolotl name=":hisako"></axolotl><tortoise name=":calvin"></tortoise><axolotl name=":hisako"></axolotl><axolotl name=":hisako"></axolotl><toucan name=":socorro"></toucan>
 
 * Simple XML Parsing
 

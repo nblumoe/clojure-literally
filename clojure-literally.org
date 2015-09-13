@@ -35,6 +35,8 @@
 *** Components
 *** Compojure
 *** Schema
+** XML Processing
+   - [[file:chapters/xml/index.org][XML Processing with Clojure's clojure.data.xml]]
 ** Logic Programming
    - [[file:chapters/logic/index.org][Logic Programming with Clojure's core.logic]]
 ** Development Tools

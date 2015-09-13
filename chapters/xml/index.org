@@ -1,3 +1,7 @@
+#+TITLE: XML Processing
+#+AUTHOR: Nils Blum-Oeste
+#+PROPERTY: header-args :tangle yes
+
 * xml
 
   Start writing the chapter here.
@@ -91,6 +95,55 @@
 
 * Handling large XML files
 
+
+** Reading and writing XML files
+
+   #+BEGIN_SRC clojure
+   (require '[clojure.java.io :as io])
+   #+END_SRC
+
+   #+RESULTS:
+   : nil
+
+   We can write some animals to an XML file like this:
+
+   #+BEGIN_SRC clojure
+   (with-open [writer (io/writer "animals.xml")]
+     (let [animals (take 50 lazy-animals)
+           xml-animals (map animal->xml animals)]
+       (xml/emit xml-animals writer)))
+   #+END_SRC
+
+   #+RESULTS:
+   : #object[java.io.BufferedWriter 0x514ce32d "java.io.BufferedWriter@514ce32d"]
+
+   Reading the XML works similarily:
+
+   #+BEGIN_SRC clojure
+   (with-open [reader (io/input-stream (io/file "animals.xml"))]
+     (xml/parse reader))
+   #+END_SRC
+
+   #+RESULTS:
+   : #clojure.data.xml.Element{:tag :petstore, :attrs {}, :content (#clojure.data.xml.Element{:tag :axolotl, :attrs {:name ":marsha"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":laverna"}, :content ()} #clojure.data.xml.Element{:tag :tortoise, :attrs {:name ":gwyn"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":socorro"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":marsha"}, :content ()} #clojure.data.xml.Element{:tag :tortoise, :attrs {:name ":calvin"}, :content ()} #clojure.data.xml.Element{:tag :tortoise, :attrs {:name ":marsha"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":socorro"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":socorro"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":socorro"}, :content ()} #clojure.data.xml.Element{:tag :dog, :attrs {:name ":mallory"}, :content ()} #clojure.data.xml.Element{:tag :dog, :attrs {:name ":alma"}, :content ()} #clojure.data.xml.Element{:tag :axolotl, :attrs {:name ":calvin"}, :content ()} #clojure.data.xml.Element{:tag :dog, :attrs {:name ":alma"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":socorro"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":calvin"}, :content ()} #clojure.data.xml.Element{:tag :axolotl, :attrs {:name ":socorro"}, :content ()} #clojure.data.xml.Element{:tag :dog, :attrs {:name ":laverna"}, :content ()} #clojure.data.xml.Element{:tag :tortoise, :attrs {:name ":mallory"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":mallory"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":calvin"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":mallory"}, :content ()} #clojure.data.xml.Element{:tag :axolotl, :attrs {:name ":alma"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":hisako"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":cindie"}, :content ()} #clojure.data.xml.Element{:tag :tortoise, :attrs {:name ":marsha"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":cindie"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":socorro"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":marsha"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":mallory"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":alma"}, :content ()} #clojure.data.xml.Element{:tag :dog, :attrs {:name ":cindie"}, :content ()} #clojure.data.xml.Element{:tag :dog, :attrs {:name ":alma"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":socorro"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":cindie"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":mallory"}, :content ()} #clojure.data.xml.Element{:tag :axolotl, :attrs {:name ":alma"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":alma"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":calvin"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":hisako"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":alma"}, :content ()} #clojure.data.xml.Element{:tag :dog, :attrs {:name ":socorro"}, :content ()} #clojure.data.xml.Element{:tag :axolotl, :attrs {:name ":mallory"}, :content ()} #clojure.data.xml.Element{:tag :toucan, :attrs {:name ":mallory"}, :content ()} #clojure.data.xml.Element{:tag :dog, :attrs {:name ":kent"}, :content ()} #clojure.data.xml.Element{:tag :dog, :attrs {:name ":cindie"}, :content ()} #clojure.data.xml.Element{:tag :cat, :attrs {:name ":kent"}, :content ()} #clojure.data.xml.Element{:tag :dog, :attrs {:name ":hisako"}, :content ()} #clojure.data.xml.Element{:tag :axolotl, :attrs {:name ":gwyn"}, :content ()} #clojure.data.xml.Element{:tag :tortoise, :attrs {:name ":mallory"}, :content ()})}
+
+
 ** Lazy evaluation
 
-** Using event streams
+   So far this was very easy. If you only have to handle files which fit into memory, that might be all you need to know. However, things
+   get a bit more challenging if you have to deal with large files. By large I mean >1 GB, depending on your available memory config and
+   your JVM configuration.
+
+   #+BEGIN_SRC clojure
+   (with-open [reader (io/input-stream (io/file "animals_large.xml"))]
+     (doall
+      (nth (->> (xml/parse reader)
+                :content
+                (filter #(= (:tag %) :cat)))
+           1000)))
+   #+END_SRC
+
+   #+RESULTS:
+
+
+* Using event streams

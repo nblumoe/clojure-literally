@@ -55,6 +55,9 @@
    (def names [:alma :gwyn :mallory :socorro :calvin :cindie :kent :laverna :hisako :marsha])
    #+END_SRC
 
+   #+RESULTS:
+   : #'user/animals#'user/names
+
    Getting random pairs from our vectors is easy:
 
    #+BEGIN_SRC clojure
@@ -64,6 +67,9 @@
        {:animal animal :name name}))
    #+END_SRC
 
+   #+RESULTS:
+   : #'user/rand-animal
+
    We want to be able to get a XML represantation of each animal:
 
    #+BEGIN_SRC clojure
@@ -71,12 +77,16 @@
      (xml/element animal {:name name}))
    #+END_SRC
 
+   #+RESULTS:
+   : #'user/animal->xml
+
    To get a number of random animals we can use a function like this:
 
    #+BEGIN_SRC clojure
    (defn get-animals [num-animals]
-     (->> (repeatedly num-animals rand-animal)
-          (map animal->xml)))
+     (lazy-seq
+      (->> (repeatedly num-animals rand-animal)
+           (map animal->xml))))
    #+END_SRC
 
    #+RESULTS:
@@ -89,7 +99,7 @@
    #+END_SRC
 
    #+RESULTS:
-   : <?xml version="1.0" encoding="UTF-8"?><toucan name=":hisako"></toucan><dog name=":mallory"></dog><axolotl name=":hisako"></axolotl><cat name=":marsha"></cat><tortoise name=":calvin"></tortoise><axolotl name=":hisako"></axolotl><tortoise name=":calvin"></tortoise><axolotl name=":hisako"></axolotl><axolotl name=":hisako"></axolotl><toucan name=":socorro"></toucan>
+   : <?xml version="1.0" encoding="UTF-8"?><dog name=":mallory"></dog><cat name=":cindie"></cat><dog name=":alma"></dog><cat name=":gwyn"></cat><cat name=":alma"></cat><cat name=":mallory"></cat><toucan name=":kent"></toucan><toucan name=":marsha"></toucan><axolotl name=":gwyn"></axolotl><dog name=":kent"></dog>
 
 * Simple XML Parsing
 
@@ -145,5 +155,53 @@
 
    #+RESULTS:
 
+   #+BEGIN_SRC clojure
+   (nth (get-animals 1000000000) 1000000)
+   #+END_SRC
+
+   We can prevent head retention by using =dissoc= and passing that to another function:
+
+   #+BEGIN_SRC clojure
+   (defn process-pets [head pets n]
+     (assoc head :new-pet (nth pets n)))
+
+   (defn wo-head-retention [root n]
+     (let [head (dissoc root :pets)
+           pets (:pets root)]
+       (process-pets head pets n)))
+   #+END_SRC
+
+   #+RESULTS:
+   : #'user/process-pets#'user/wo-head-retention
+
+   This way, we can go through very long seqs without running out of memory:
+
+   #+BEGIN_SRC clojure
+   (let [person {:name "foo"
+                 :pets (get-animals 1000000000)}]
+     (wo-head-retention person 10000000))
+   #+END_SRC
+
+   #+RESULTS:
+   : '(:name "foo"  :new-pet #clojure.data.xml.Element(:tag :dog  :attrs (:name :mallory)  :content ()))
+
+   The following code will result in an out of memory exception, because we have head retention through =person=.
+   (Running this might crash your JVM or development environment, nevertheless: Give it a try!)
+
+   #+BEGIN_SRC clojure
+   (let [person {:name "foo"
+                 :pets (get-animals 1000000000)}]
+     (assoc person :new-pet (nth (:pets person) 10000000))
+     person)
+   #+END_SRC
+
+   #+BEGIN_SRC clojure
+   (let [person {:name "foo"
+                 :pets (get-animals 1000000000)}]
+     (identity person)
+     (assoc person :new-pet (nth (:pets person) 10000000)))
+   #+END_SRC
+
+   #+RESULTS:
 
 * Using event streams
